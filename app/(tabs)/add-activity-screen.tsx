@@ -1,18 +1,15 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-export default function HomeScreen() {
+export default function AddActivityScreen() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home Screen</Text>
+      <Text style={styles.title}>Add Activity Screen</Text>
 
-      <Pressable
-        style={styles.button}
-        onPress={() => router.push("/add-activity-screen")}
-      >
-        <Text style={styles.buttonText}>Add activity</Text>
+      <Pressable style={styles.button} onPress={() => router.back()}>
+        <Text style={styles.buttonText}>Go back</Text>
       </Pressable>
     </View>
   );
@@ -30,7 +27,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#28a745",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
