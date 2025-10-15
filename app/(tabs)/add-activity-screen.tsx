@@ -35,7 +35,6 @@ export default function AddActivityScreen() {
       <Text style={styles.title}>Add Activity</Text>
 
       <View style={styles.formContainer}>
-        <Text style={styles.label}>Number of Steps</Text>
         <TextInput
           style={styles.input}
           value={steps}
@@ -60,43 +59,43 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#FEF9E6",
+    justifyContent: "center",
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 30,
-    marginTop: 40,
+    marginTop: 0,
     textAlign: "center",
   },
-  formContainer: {
-    flex: 1,
-  },
+  formContainer: {}, // removed the flex-1 to center it
   label: {
     fontSize: 18,
     marginBottom: 10,
     fontWeight: "500",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "#000000",
+    backgroundColor: "#ffffff",
+    borderRadius: 0,
     padding: 12,
     fontSize: 16,
     marginBottom: 20,
   },
   addButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#1ED2AF",
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 8,
-    marginBottom: 10,
+    borderRadius: 0,
+    marginBottom: 0,
   },
   cancelButton: {
-    backgroundColor: "#6c757d",
+    backgroundColor: "#D00414",
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 8,
+    borderRadius: 0,
   },
   buttonText: {
     color: "#fff",
