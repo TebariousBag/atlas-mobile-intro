@@ -2,6 +2,8 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useActivitiesContext } from "@/components/ActivitiesProvider";
 import { FlashList } from "@shopify/flash-list";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 type Activity = {
   id: number;
@@ -19,19 +21,31 @@ export default function HomeScreen() {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
-  const renderItem = ({ item }: { item: Activity }) => (
-    <View style={styles.activityItem}>
-      <View style={styles.activityInfo}>
-        <Text style={styles.dateText}>{formatDate(item.date)}</Text>
-        <Text style={styles.stepsText}>Steps: {item.steps}</Text>
+  const renderRightActions = (item: Activity) => {
+    return (
+      <View style={styles.swipeActionContainer}>
+        <Pressable
+          style={styles.swipeDeleteButton}
+          onPress={() => deleteActivity(item.id)}
+        >
+          <Text style={styles.swipeDeleteText}>Delete</Text>
+        </Pressable>
       </View>
-      <Pressable
-        style={styles.deleteButton}
-        onPress={() => deleteActivity(item.id)}
-      >
-        <Text style={styles.deleteButtonText}>Delete</Text>
-      </Pressable>
-    </View>
+    );
+  };
+
+  const renderItem = ({ item }: { item: Activity }) => (
+    <Swipeable
+      renderRightActions={() => renderRightActions(item)}
+      overshootRight={false}
+    >
+      <View style={styles.activityItem}>
+        <View style={styles.activityInfo}>
+          <Text style={styles.dateText}>{formatDate(item.date)}</Text>
+          <Text style={styles.stepsText}>Steps: {item.steps}</Text>
+        </View>
+      </View>
+    </Swipeable>
   );
 
   const renderEmptyComponent = () => (
@@ -41,35 +55,40 @@ export default function HomeScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.listWrapper}>
-        <FlashList
-          data={activities || []}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          ListEmptyComponent={renderEmptyComponent}
-          contentContainerStyle={styles.listContentContainer}
-        />
+    <GestureHandlerRootView style={styles.gestureContainer}>
+      <View style={styles.container}>
+        <View style={styles.listWrapper}>
+          <FlashList
+            data={activities || []}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            ListEmptyComponent={renderEmptyComponent}
+            contentContainerStyle={styles.listContentContainer}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push("/add-activity-screen")}
+          >
+            <Text style={styles.buttonText}>Add Activity</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.button, styles.deleteAllButton]}
+            onPress={deleteAllActivities}
+          >
+            <Text style={styles.buttonText}>Delete all activities</Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={styles.button}
-          onPress={() => router.push("/add-activity-screen")}
-        >
-          <Text style={styles.buttonText}>Add Activity</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.button, styles.deleteAllButton]}
-          onPress={deleteAllActivities}
-        >
-          <Text style={styles.buttonText}>Delete all activities</Text>
-        </Pressable>
-      </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
+  gestureContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -130,15 +149,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#000000",
   },
-  deleteButton: {
-    backgroundColor: "#dc3545",
-    paddingVertical: 10,
-    paddingHorizontal: 4,
-    borderRadius: 0,
+  swipeActionContainer: {
+    justifyContent: "center",
+    marginBottom: 10,
   },
-  deleteButtonText: {
+  swipeDeleteButton: {
+    backgroundColor: "#D00414",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 100,
+    height: "100%",
+    borderWidth: 2,
+    borderColor: "#000",
+    borderLeftWidth: 0,
+  },
+  swipeDeleteText: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: 16,
+    fontWeight: "bold",
   },
   emptyText: {
     textAlign: "center",

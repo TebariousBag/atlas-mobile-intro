@@ -39,7 +39,8 @@ export default function AddActivityScreen() {
           style={styles.input}
           value={steps}
           onChangeText={setSteps}
-          placeholder="Enter number of steps"
+          placeholder="Enter steps"
+          placeholderTextColor="#666666"
           keyboardType="numeric"
         />
 
